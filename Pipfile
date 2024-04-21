@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 reflex = "*"
+jax = "*"
+google-generativeai = "*"
+flax = "*"
+diffusers = "*"
 
 [dev-packages]
 
