@@ -36,9 +36,8 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
 
 def generate_recipe(req: dict):
     prompt_parts = [
-        "Provide a healthier recipe consistent with the provided ingredients and description, along with the steps to make them. Provide nutritional info where possible. Add a name for the recipe and categorize the details as either healthy or unhealthy. Ignore ingredients with quantity 0.",
+        "Provide a healthier recipe consistent with the provided ingredients, along with the steps to make them. Provide nutritional info where possible. Add a name for the recipe and categorize the details as either healthy or unhealthy. Ignore ingredients with quantity 0.",
         "Ingredients: " + req["ingredients"],
-        "Description: " + req["description"],
     ]
     response = model.generate_content(prompt_parts)
     return response.text

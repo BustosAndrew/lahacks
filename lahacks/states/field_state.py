@@ -16,9 +16,6 @@ class FieldState(rx.State):
     def set_unit(self, unit: str):
         self.unit = unit
 
-    def set_details(self, details: str):
-        self.details = details
-
     def reset_vals(self):
         self.ingredient = ""
         self.quantity = 0

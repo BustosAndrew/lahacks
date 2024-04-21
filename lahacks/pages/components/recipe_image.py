@@ -12,6 +12,8 @@ def output():
         #     height="200px",
         # )
         rx.vstack(
+            rx.link(rx.button("Go Back", _hover={"cursor": "pointer"},), href="/",
+                    ),
             rx.heading("Generated Recipe"),
             rx.markdown(DynamicFormState.ai_response),
             height="100%",

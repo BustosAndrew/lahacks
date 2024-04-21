@@ -29,7 +29,6 @@ class DynamicFormState(rx.State):
                 f"{field[1]}{field[2]} {field[0]}"
                 for field in self.form_fields
             ]),
-            "description": form_data.get("details", ""),
         })
         self.form_fields = []
         self.submitted = False

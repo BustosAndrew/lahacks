@@ -42,8 +42,7 @@ def dynamic_form():
                     rx.button("Clear", on_click=FieldState.reset_vals,
                               type="button"),
                 ),
-                rx.text_area(
-                    placeholder="What kind of recipe do you want to make?", width="100%", on_change=FieldState.set_details),
+                rx.text("Press the + button to add your ingredient."),
                 rx.spacer(),
                 rx.hstack(
                     rx.button("Submit", type="submit",
@@ -53,8 +52,17 @@ def dynamic_form():
                     rx.cond(DynamicFormState.submitted,
                             rx.text("Generating...")),
                 ),
+                rx.cond(
+                    DynamicFormState.ai_response != "",
+                    rx.link(
+                        "Your recipe results are generated!",
+                        href="/output/",
+                        size='4'
+                    ),
+                ),
                 height="100%"
             ),
+            on_mount=DynamicFormState.handle_reset,
             on_submit=DynamicFormState.handle_submit,
             reset_on_submit=True,
             height="100%"
@@ -74,13 +82,6 @@ def index() -> rx.Component:
                 border_radius=10,
                 height="80%",
                 padding=20,
-            ),
-            rx.cond(
-                DynamicFormState.ai_response != "",
-                rx.link(
-                    "Results",
-                    href="/output/"
-                ),
             ),
             height="100%",
             padding=20,
