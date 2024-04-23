@@ -6,12 +6,15 @@ from lahacks.styles.styles import button_style
 @rx.page(route="/output/")
 def output():
     return rx.center(
+        rx.script(src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs",
+                  custom_attrs={"type": "module"}),
         rx.vstack(
             rx.link(rx.button("Go Back", _hover={"cursor": "pointer"}, style=button_style), href="/",
                     ),
             rx.cond(
                 DynamicFormState.imageLink == "",
-                rx.text("Generating Image..."),
+                rx.box(rx.text("Cooking something up..."), rx.html(
+                    '''<dotlottie-player src="https://lottie.host/f3bf595a-c177-4b15-bd92-7b77c9c1cb7f/5rP9GZJohZ.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>''')),
                 rx.image(
                     src=DynamicFormState.imageLink,
                     alt="Recipe Image",

@@ -51,10 +51,8 @@ def dynamic_form():
                     rx.button(
                         "Reset", on_click=DynamicFormState.handle_reset, type="button", style=button_style),
                     rx.cond(
-                        DynamicFormState.submitted,
-                        rx.html('''<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
-
-    <dotlottie-player src="https://lottie.host/d395e1a4-28dc-4e60-bffd-8a8ed8844318/qvoNVQ79Bc.json" background="transparent" speed="1" style="width: 50px; height: 40px;" loop autoplay></dotlottie-player>'''),
+                        DynamicFormState.buttonText == "Generating...",
+                        rx.html('''<dotlottie-player src="https://lottie.host/d395e1a4-28dc-4e60-bffd-8a8ed8844318/qvoNVQ79Bc.json" background="transparent" speed="1" style="width: 50px; height: 40px;" loop autoplay></dotlottie-player>'''),
                     ),
                     align="center",
                 ),
@@ -83,6 +81,8 @@ def dynamic_form():
 
 def index() -> rx.Component:
     return rx.center(
+        rx.script(src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs",
+                  custom_attrs={"type": "module"}),
         rx.vstack(
             rx.heading("Chef.ai", marginX="auto", paddingY=10),
             rx.box(
