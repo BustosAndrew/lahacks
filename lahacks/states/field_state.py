@@ -5,6 +5,7 @@ class FieldState(rx.State):
     ingredient: str = ""
     quantity: str = ""
     unit: str = ""
+    cookware: str = ""
 
     def set_ingredient(self, ingredient: str):
         self.ingredient = ingredient
@@ -23,6 +24,9 @@ class FieldState(rx.State):
 
     def set_unit(self, unit: str):
         self.unit = unit
+
+    def set_cookware(self, cookware: str):
+        self.cookware = cookware
 
     def reset_vals(self):
         self.ingredient = ""

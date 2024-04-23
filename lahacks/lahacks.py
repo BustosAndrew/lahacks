@@ -31,18 +31,24 @@ def dynamic_form():
                         on_change=FieldState.set_quantity,
                         value=FieldState.quantity
                     ),
-                    rx.select(["grams", "oz", "fl oz", "gallon(s)", "piece(s)", "slice(s)", "can(s)", "jar(s)", "bottle(s)", "jug(s)", "bag(s)"], name="unit", placeholder="Units (optional)",
+                    rx.select(["no unit", "grams", "oz", "fl oz", "gallon(s)", "piece(s)", "slice(s)", "can(s)", "jar(s)", "bottle(s)", "jug(s)", "bag(s)"], name="unit", placeholder="Units (optional)",
                               on_change=FieldState.set_unit, value=FieldState.unit),
                     rx.button("+", on_click=DynamicFormState.add_field(
                         FieldState.ingredient,
                         FieldState.quantity,
-                        FieldState.unit
+                        FieldState.unit,
                     ), type="button", style=button_style),
                     rx.button("Clear", on_click=FieldState.reset_vals,
                               type="button", style=button_style),
                 ),
                 rx.checkbox("Use only these ingredients?", size="3",
                             on_change=DynamicFormState.set_only_ingredients, checked=DynamicFormState.onlyIngredients, name="onlyIngredients"),
+                rx.input.root(rx.input(
+                    placeholder="Enter your cookware (optional)",
+                    name="cookware",
+                    on_change=FieldState.set_cookware,
+                    value=FieldState.cookware,
+                ), width="100%"),
                 rx.text("Press the + button to add your ingredient."),
                 rx.spacer(),
                 rx.hstack(
@@ -72,10 +78,8 @@ def dynamic_form():
             on_submit=DynamicFormState.handle_submit,
             reset_on_submit=True,
             height="100%",
-            max_width="100%",
         ),
         height="100%",
-        max_width="90vw",
     )
 
 
@@ -94,7 +98,6 @@ def index() -> rx.Component:
                 padding=20,
             ),
             height="100%",
-
         ),
         height="100vh",
         paddingX=10,

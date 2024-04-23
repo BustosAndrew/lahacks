@@ -36,9 +36,13 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
 
 
 def generate_recipe(req: dict):
+    print(req["cookware"])
     prompt_parts = [
-        "Provide a healthier recipe consistent with the provided ingredients, along with the steps to make them. Provide nutritional info where possible. Add a name for the recipe and categorize the details as either healthy or unhealthy. Ignore ingredients with quantity 0.",
+        "Provide a healthier recipe consistent with the provided ingredients, along with the steps to make them. Adjust the entire recipe depending on the provided cookware. Provide nutritional info where possible. Add a name for the recipe and categorize the details as either healthy or unhealthy. Make sure to flag anything as unhealthy from the ingredients.",
         "Ingredients: " + req["ingredients"],
+        "Use only these ingredients (True/False): " +
+        str(req["onlyIngredients"]),
+        "Cookware: " + req["cookware"],
     ]
     response = model.generate_content(prompt_parts, stream=True)
 
@@ -48,7 +52,7 @@ def generate_recipe(req: dict):
 
 def generate_prompt(req: str):
     prompt_parts = [
-        "Generate only one prompt of an image that resembles very closely to the provided recipe. Be as specific and detailed as possible according to the recipe guideline. Ensure that the prompt also adheres closely to the given amount per ingredient. Only give the plain text of the prompt idea without any formatting or headers.",
+        "Generate only one prompt of an image that resembles very closely to the end result of the provided recipe. Be as specific and detailed as possible according to the recipe guideline. Ensure that the prompt also adheres closely to the given amount per ingredient. Only give the plain text of the prompt idea without any formatting or headers.",
         "Recipe details: " + req,
     ]
     response = model.generate_content(prompt_parts)

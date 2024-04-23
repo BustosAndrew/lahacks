@@ -2,9 +2,6 @@ import reflex as rx
 from lahacks.states.field_state import FieldState
 from lahacks.api.gemini import generate_recipe, generate_prompt
 from lahacks.pages.text2img import text2img
-import os
-
-file_path = "assets/meal1.png"
 
 
 class DynamicFormState(rx.State):
@@ -45,6 +42,8 @@ class DynamicFormState(rx.State):
                 f"{field[1]}{field[2]} {field[0]}"
                 for field in self.form_fields
             ]),
+            "onlyIngredients": self.onlyIngredients,
+            "cookware": form_data.get("cookware", "Decide based on the recipe."),
         })
 
         for chunk in chunks:
@@ -63,6 +62,7 @@ class DynamicFormState(rx.State):
         FieldState.ingredient = ""
         FieldState.quantity = ""
         FieldState.unit = ""
+        FieldState.cookware = ""
         yield
         self.ai_response = ""
         self.form_data = {}
@@ -71,5 +71,3 @@ class DynamicFormState(rx.State):
         self.cantSubmit = True
         self.onlyIngredients = False
         yield
-        if os.path.exists(file_path):
-            os.remove(file_path)
