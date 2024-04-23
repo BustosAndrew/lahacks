@@ -27,9 +27,7 @@ def dynamic_form():
                     rx.input(
                         placeholder="Quantity",
                         name="quantity",
-                        value=f"{FieldState.quantity}",
-                        type="number",
-                        min=0,
+                        # value=f"{FieldState.quantity}",
                         on_change=FieldState.set_quantity
                     ),
                     rx.select(["g", "oz"], name="unit", value=FieldState.unit,
@@ -45,20 +43,24 @@ def dynamic_form():
                 rx.text("Press the + button to add your ingredient."),
                 rx.spacer(),
                 rx.hstack(
-                    rx.button("Submit", type="submit",
+                    rx.button(DynamicFormState.buttonText, type="submit",
                               disabled=DynamicFormState.cantSubmit),
                     rx.button(
-                        "Reset", on_click=DynamicFormState.handle_reset),
-                    rx.cond(DynamicFormState.submitted,
-                            rx.text("Generating...")),
+                        "Reset", on_click=DynamicFormState.handle_reset, type="button"),
+                    rx.cond(
+                        DynamicFormState.submitted,
+                        rx.text("Recipe generating!"),
+                    ),
                 ),
                 rx.cond(
                     DynamicFormState.ai_response != "",
-                    rx.link(
-                        "Your recipe results are generated!",
+                    rx.box(rx.text("View your ", size="4", as_="span"), rx.link(
+                        "generated recipe!",
                         href="/output/",
-                        size='4'
-                    ),
+                        underline="always",
+                        size="4",
+                        as_="span"
+                    )),
                 ),
                 height="100%"
             ),

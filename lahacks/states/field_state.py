@@ -10,8 +10,17 @@ class FieldState(rx.State):
     def set_ingredient(self, ingredient: str):
         self.ingredient = ingredient
 
-    def set_quantity(self, quantity: int):
-        self.quantity = quantity
+    def set_quantity(self, quantity: str):
+        if quantity == "":
+            self.quantity = 0
+            return
+        elif not quantity.isnumeric():
+            self.quantity = 0
+            return
+        elif int(quantity) < 0:
+            self.quantity = 0
+            return
+        self.quantity = int(quantity)
 
     def set_unit(self, unit: str):
         self.unit = unit

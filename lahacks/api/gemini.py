@@ -1,6 +1,7 @@
 import google.generativeai as genai
+import os
 
-genai.configure(api_key="AIzaSyDNOIh-OOaMZb0GG1iNqiTuTAKlejdkL9U")
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
 # Set up the model
 generation_config = {
@@ -39,5 +40,17 @@ def generate_recipe(req: dict):
         "Provide a healthier recipe consistent with the provided ingredients, along with the steps to make them. Provide nutritional info where possible. Add a name for the recipe and categorize the details as either healthy or unhealthy. Ignore ingredients with quantity 0.",
         "Ingredients: " + req["ingredients"],
     ]
+    response = model.generate_content(prompt_parts, stream=True)
+
+    for chunk in response:
+        yield chunk
+
+
+def generate_prompt(req: str):
+    prompt_parts = [
+        "Generate only one prompt of what an image should look like from the provided recipe details, including all the ingredients. Only give the plain text of the prompt idea without any formatting or headers, and be as accurate as possible.",
+        "Recipe details: " + req,
+    ]
     response = model.generate_content(prompt_parts)
+
     return response.text
