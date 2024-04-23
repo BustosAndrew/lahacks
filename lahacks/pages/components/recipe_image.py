@@ -1,12 +1,13 @@
 import reflex as rx
 from lahacks.states.form_state import DynamicFormState
+from lahacks.styles.styles import button_style
 
 
 @rx.page(route="/output/")
 def output():
     return rx.center(
         rx.vstack(
-            rx.link(rx.button("Go Back", _hover={"cursor": "pointer"},), href="/",
+            rx.link(rx.button("Go Back", _hover={"cursor": "pointer"}, style=button_style), href="/",
                     ),
             rx.cond(
                 DynamicFormState.imageLink == "",

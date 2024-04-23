@@ -1,6 +1,15 @@
-diffusers==0.27.2
-flax==0.8.2
 google-generativeai==0.5.2
 grpcio-status==1.62.2
 importlib_resources==6.4.0
+networkx==3.3
+openai==1.23.2
+opt-einsum==3.3.0
+optax==0.2.2
+orbax-checkpoint==0.5.10
+pillow==10.3.0
 reflex==0.4.8.post1
+regex==2024.4.16
+safetensors==0.4.3
+sympy==1.12
+tokenizers==0.19.1
+update==0.0.1

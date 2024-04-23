@@ -2,6 +2,7 @@ import reflex as rx
 from lahacks.pages.components.recipe_image import output
 from lahacks.states.form_state import DynamicFormState
 from lahacks.states.field_state import FieldState
+from lahacks.styles.styles import button_style
 
 
 def dynamic_form():
@@ -10,12 +11,12 @@ def dynamic_form():
             rx.vstack(
                 rx.foreach(
                     DynamicFormState.form_fields,
-                    lambda field: rx.hstack(
+                    lambda field: rx.box(rx.vstack(
                         rx.vstack(rx.heading("Ingredient", size="4"),
-                                  rx.text(field[0])),
-                        rx.vstack(rx.heading("Weight", size="4"),
-                                  rx.text(field[1] + field[2]),),
-                    ),
+                                  rx.text(field[0], style={"overflow-wrap": "break-word", "word-wrap": "break-word"})),
+                        rx.heading("Amount", size="4"),
+                        rx.text(field[1] + " " + field[2]),
+                    ), border_width=1, border_color="gray-300", border_radius=10, padding=10, width="100%"),
                 ),
                 rx.hstack(
                     rx.input(
@@ -25,32 +26,37 @@ def dynamic_form():
                         on_change=FieldState.set_ingredient
                     ),
                     rx.input(
-                        placeholder="Quantity",
-                        name="quantity",
-                        # value=f"{FieldState.quantity}",
-                        on_change=FieldState.set_quantity
+                        placeholder="Amount",
+                        name="amount",
+                        on_change=FieldState.set_quantity,
+                        value=FieldState.quantity
                     ),
-                    rx.select(["g", "oz"], name="unit", value=FieldState.unit,
-                              on_change=FieldState.set_unit),
+                    rx.select(["grams", "oz", "fl oz", "gallon(s)", "piece(s)", "slice(s)", "can(s)", "jar(s)", "bottle(s)", "jug(s)", "bag(s)"], name="unit", placeholder="Units (optional)",
+                              on_change=FieldState.set_unit, value=FieldState.unit),
                     rx.button("+", on_click=DynamicFormState.add_field(
                         FieldState.ingredient,
                         FieldState.quantity,
                         FieldState.unit
-                    ), type="button"),
+                    ), type="button", style=button_style),
                     rx.button("Clear", on_click=FieldState.reset_vals,
-                              type="button"),
+                              type="button", style=button_style),
                 ),
+                rx.checkbox("Use only these ingredients?", size="3",
+                            on_change=DynamicFormState.set_only_ingredients, checked=DynamicFormState.onlyIngredients, name="onlyIngredients"),
                 rx.text("Press the + button to add your ingredient."),
                 rx.spacer(),
                 rx.hstack(
                     rx.button(DynamicFormState.buttonText, type="submit",
-                              disabled=DynamicFormState.cantSubmit),
+                              disabled=DynamicFormState.cantSubmit, style=button_style),
                     rx.button(
-                        "Reset", on_click=DynamicFormState.handle_reset, type="button"),
+                        "Reset", on_click=DynamicFormState.handle_reset, type="button", style=button_style),
                     rx.cond(
                         DynamicFormState.submitted,
-                        rx.text("Recipe generating!"),
+                        rx.html('''<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+    <dotlottie-player src="https://lottie.host/d395e1a4-28dc-4e60-bffd-8a8ed8844318/qvoNVQ79Bc.json" background="transparent" speed="1" style="width: 50px; height: 40px;" loop autoplay></dotlottie-player>'''),
                     ),
+                    align="center",
                 ),
                 rx.cond(
                     DynamicFormState.ai_response != "",
@@ -62,14 +68,16 @@ def dynamic_form():
                         as_="span"
                     )),
                 ),
-                height="100%"
+                height="100%",
             ),
             on_mount=DynamicFormState.handle_reset,
             on_submit=DynamicFormState.handle_submit,
             reset_on_submit=True,
-            height="100%"
+            height="100%",
+            max_width="100%",
         ),
-        height="100%"
+        height="100%",
+        max_width="90vw",
     )
 
 
@@ -86,9 +94,10 @@ def index() -> rx.Component:
                 padding=20,
             ),
             height="100%",
-            padding=20,
+
         ),
         height="100vh",
+        paddingX=10,
     )
 
 

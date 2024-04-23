@@ -15,6 +15,10 @@ class DynamicFormState(rx.State):
     cantSubmit: bool = True
     buttonText: str = "Submit"
     imageLink: str = ""
+    onlyIngredients: bool = False
+
+    def set_only_ingredients(self, value: bool):
+        self.onlyIngredients = value
 
     def add_field(self, ingredient: str, quantity: int, unit: str):
         if not ingredient:
@@ -56,12 +60,16 @@ class DynamicFormState(rx.State):
             self.imageLink = text2img(recipe_prompt)
 
     def handle_reset(self):
+        FieldState.ingredient = ""
+        FieldState.quantity = ""
+        FieldState.unit = ""
+        yield
         self.ai_response = ""
         self.form_data = {}
         self.form_fields = []
-        FieldState.ingredient = ""
-        FieldState.quantity = 0
+        self.imageLink = ""
         self.cantSubmit = True
+        self.onlyIngredients = False
         yield
         if os.path.exists(file_path):
             os.remove(file_path)

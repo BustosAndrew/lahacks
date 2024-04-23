@@ -48,7 +48,7 @@ def generate_recipe(req: dict):
 
 def generate_prompt(req: str):
     prompt_parts = [
-        "Generate only one prompt of what an image should look like from the provided recipe details, including all the ingredients. Only give the plain text of the prompt idea without any formatting or headers, and be as accurate as possible.",
+        "Generate only one prompt of an image that resembles very closely to the provided recipe. Be as specific and detailed as possible according to the recipe guideline. Ensure that the prompt also adheres closely to the given amount per ingredient. Only give the plain text of the prompt idea without any formatting or headers.",
         "Recipe details: " + req,
     ]
     response = model.generate_content(prompt_parts)
